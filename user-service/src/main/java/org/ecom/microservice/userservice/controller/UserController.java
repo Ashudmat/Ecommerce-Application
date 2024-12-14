@@ -1,6 +1,5 @@
 package org.ecom.microservice.userservice.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.ecom.microservice.userservice.dto.SetUserRolesRequestDto;
 import org.ecom.microservice.userservice.dto.UserDto;
 import org.ecom.microservice.userservice.model.User;
