@@ -43,18 +43,21 @@ public class UserService {
         return UserDto.from(optionalUser.get());
     }
 
-//    public UserDto setUserRoles(Long userId, List<Long> roleIds) {
-//        Optional<User> optionalUser = userRepository.findById(userId);
-//        List<Role> roles = roleRepository.findAllByIdIn(roleIds); // Fetch the Roles from the Database:
-//
-//        if (optionalUser.isEmpty()) return null;
-//
-//        User user  = optionalUser.get();
-//        user.setRoles(Set.copyOf(roles)); //Update the User's Roles:
-//
-//        User savedUser = userRepository.save(user);
-//        return UserDto.from(savedUser);
-//    }
+    public UserDto setUserRoles(Long userId, List<Long> roleIds) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        List<Role> roles = roleRepository.findAllByIdIn(roleIds); // Fetch the Roles from the Database:
+
+        if (optionalUser.isEmpty()) return null;
+
+        User user  = optionalUser.get();
+        user.setRoles(Set.copyOf(roles)); //Update the User's Roles:
+
+        //User savedUser = userRepository.save(user);
+        //return UserDto.from(savedUser);
+
+        userRepository.save(user);
+        return UserDto.from(user);
+    }
 
 
 
