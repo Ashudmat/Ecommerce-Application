@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Session extends BaseModel {
+public class Session extends IdBaseModel {
     private String token;
     private Date expiringAt;
 

@@ -41,10 +41,11 @@ public class UserController {
         return new ResponseEntity<>(userDto,HttpStatus.OK);
     }
 
-    @PostMapping(path = "/{id}")
-    public ResponseEntity<UserDto> setUserRoles(@PathVariable Long userId, @RequestBody SetUserRolesRequestDto request) {
-        UserDto userDto = userService.setUserRoles(userId, request.getRoleIds());
-        return new ResponseEntity<>(userDto,HttpStatus.OK);
-    }
+//    @PostMapping(path = "/{id}/roles")
+//    public ResponseEntity<UserDto> setUserRoles(@PathVariable("id") Long userId, @RequestBody SetUserRolesRequestDto request) {
+//        UserDto userDto = userService.setUserRoles(userId, request.getRoleIds());
+//        return new ResponseEntity<>(userDto,HttpStatus.OK);
+//    }
+
 
 }

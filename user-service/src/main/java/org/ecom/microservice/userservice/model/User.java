@@ -2,10 +2,10 @@ package org.ecom.microservice.userservice.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,11 +14,11 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class User extends BaseModel {
+public class User extends IdBaseModel {
 
     private String email;
     private String password;
 
-    @ManyToMany    //As users can have many roles
+    @ManyToMany    //users can have many roles
     private Set<Role> roles = new HashSet<>();
 }

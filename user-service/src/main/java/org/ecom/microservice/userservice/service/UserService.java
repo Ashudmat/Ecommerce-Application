@@ -1,13 +1,16 @@
 package org.ecom.microservice.userservice.service;
 
 import org.ecom.microservice.userservice.dto.UserDto;
+import org.ecom.microservice.userservice.exception.RoleNotFoundException;
 import org.ecom.microservice.userservice.mapper.UserMapper;
 import org.ecom.microservice.userservice.model.Role;
 import org.ecom.microservice.userservice.model.User;
 import org.ecom.microservice.userservice.repository.RoleRepository;
 import org.ecom.microservice.userservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,17 +43,19 @@ public class UserService {
         return UserDto.from(optionalUser.get());
     }
 
-    public UserDto setUserRoles(Long userId, List<Long> roleIds) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        List<Role> roles = roleRepository.findAllByIdIn(roleIds); // Fetch the Roles from the Database:
+//    public UserDto setUserRoles(Long userId, List<Long> roleIds) {
+//        Optional<User> optionalUser = userRepository.findById(userId);
+//        List<Role> roles = roleRepository.findAllByIdIn(roleIds); // Fetch the Roles from the Database:
+//
+//        if (optionalUser.isEmpty()) return null;
+//
+//        User user  = optionalUser.get();
+//        user.setRoles(Set.copyOf(roles)); //Update the User's Roles:
+//
+//        User savedUser = userRepository.save(user);
+//        return UserDto.from(savedUser);
+//    }
 
-        if (optionalUser.isEmpty()) return null;
 
-        User user  = optionalUser.get();
-        user.setRoles(Set.copyOf(roles)); //Update the User's Roles:
-
-        User savedUser = userRepository.save(user);
-        return UserDto.from(savedUser);
-    }
 
 }

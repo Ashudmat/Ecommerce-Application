@@ -6,7 +6,7 @@ import lombok.Data;
 
 @MappedSuperclass              //to check
 @Data
-public class BaseModel {
+public class IdBaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

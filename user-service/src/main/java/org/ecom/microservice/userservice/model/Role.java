@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Role extends BaseModel{
+public class Role extends IdBaseModel {
     private String role;
 }
