@@ -50,13 +50,12 @@ public class UserService {
         if (optionalUser.isEmpty()) return null;
 
         User user  = optionalUser.get();
-        user.setRoles(Set.copyOf(roles)); //Update the User's Roles:
+        //user.setRoles(Set.copyOf(roles));
+        user.setRoles(new HashSet<>(roles));  //Update the User's Roles:
 
-        //User savedUser = userRepository.save(user);
-        //return UserDto.from(savedUser);
+        User savedUser = userRepository.save(user);
+        return UserDto.from(savedUser);
 
-        userRepository.save(user);
-        return UserDto.from(user);
     }
 
 

@@ -58,7 +58,7 @@ public class AuthenticationController {
 
     @PostMapping(path = "/{id}")
     public ResponseEntity<Void> logout(@PathVariable("id") Long userId, @RequestHeader("token") String token) {
-        String res = authenticationService.logout(userId, token);
+        String res = authenticationService.logout(token , userId);
         log.info(res);
         return new ResponseEntity<>(HttpStatus.OK);
     }

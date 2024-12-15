@@ -110,6 +110,8 @@ public class AuthenticationService {
         //Setting up headers and cookies
         MultiValueMapAdapter<String,String> headers = new MultiValueMapAdapter<>(new HashMap<>());
         headers.add(HttpHeaders.SET_COOKIE,"auth-token:"+token);
+        log.info("Headers sent in response: {}", headers);
+        log.info("Generated Token: {}", token);
 
         return new ResponseEntity<>(userDto,headers,HttpStatus.OK).getBody();
     }
@@ -129,13 +131,13 @@ public class AuthenticationService {
         return SessionStatus.ACTIVE;
     }
 
-    public String logout(Long userId, String token) {
+    public String logout( String token , Long userId) {
 
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
         if(sessionOptional.isEmpty() || sessionOptional.get().getSessionStatus() == SessionStatus.ENDED){
             throw new InvalidTokenException("Oops! Token is Invalid");
         }
-        Session session = new Session();
+        Session session = sessionOptional.get();
         session.setSessionStatus(SessionStatus.ACTIVE);
         sessionRepository.save(session);
         return "Session Ended! Logged out";
