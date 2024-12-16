@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -39,15 +41,24 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<UserDto> signUp(@RequestBody SignUpRequestDto request) {
+    public ResponseEntity<Map<String,Object>> signUp(@RequestBody SignUpRequestDto request) {
         UserDto userDto = authenticationService.signUp(request.getEmail(), request.getPassword());
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+
+        Map<String,Object> response = new HashMap<>();
+        response.put("message","User signed up successfully");
+        response.put("user",userDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<UserDto> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequestDto request) {
         UserDto userDto = authenticationService.login(request.getEmail(), request.getPassword());
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+
+        Map<String,Object> response = new HashMap<>();
+        response.put("message","User logged in successfully");
+        response.put("user",userDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(path = "/validate")
@@ -56,11 +67,11 @@ public class AuthenticationController {
         return new ResponseEntity<>(status,HttpStatus.OK);
     }
 
-    @PostMapping(path = "/{id}")
-    public ResponseEntity<Void> logout(@PathVariable("id") Long userId, @RequestHeader("token") String token) {
+    @PostMapping(path = "/logout")
+    public ResponseEntity<String> logout(@RequestParam Long userId, @RequestHeader("token") String token) {
         String res = authenticationService.logout(token , userId);
         log.info(res);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping(path = "/sessions")

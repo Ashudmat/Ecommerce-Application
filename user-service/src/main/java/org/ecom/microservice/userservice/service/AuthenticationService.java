@@ -46,7 +46,7 @@ public class AuthenticationService {
 
 
     public UserDto signUp(String email, String password) {
-    Optional<User> checkUser= userRepository.findByEmail(email);  //check if email already exists in db
+    Optional<User> checkUser= userRepository.findByEmail(email);  //check if email already exists in db //Ideally it should not be
         if(!checkUser.isEmpty())
             throw new UserAlreadyExistsException("User already exists with the associated email! Please login to continue");
 
@@ -55,6 +55,7 @@ public class AuthenticationService {
         user.setPassword(bCryptPasswordEncoder.encode(password));
 
         userRepository.save(user);
+
         return new ResponseEntity<>(UserMapper.userToDtoMapper(user), HttpStatus.OK).getBody();
 
     }
@@ -110,7 +111,7 @@ public class AuthenticationService {
         //Setting up headers and cookies
         MultiValueMapAdapter<String,String> headers = new MultiValueMapAdapter<>(new HashMap<>());
         headers.add(HttpHeaders.SET_COOKIE,"auth-token:"+token);
-        log.info("Headers sent in response: {}", headers);
+        //log.info("Headers sent in response: {}", headers);
         log.info("Generated Token: {}", token);
 
         return new ResponseEntity<>(userDto,headers,HttpStatus.OK).getBody();
@@ -126,7 +127,7 @@ public class AuthenticationService {
         //check if session is there in the db and is in active mode
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
         if(sessionOptional.isEmpty() || sessionOptional.get().getSessionStatus() == SessionStatus.ENDED){
-            throw new InvalidTokenException("Oops! Token is Invalid");
+            throw new InvalidTokenException("Oops! Token is Invalid :(");
         }
         return SessionStatus.ACTIVE;
     }
@@ -135,12 +136,12 @@ public class AuthenticationService {
 
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
         if(sessionOptional.isEmpty() || sessionOptional.get().getSessionStatus() == SessionStatus.ENDED){
-            throw new InvalidTokenException("Oops! Token is Invalid");
+            throw new InvalidTokenException("Oops! Token is Invalid :(");
         }
         Session session = sessionOptional.get();
-        session.setSessionStatus(SessionStatus.ACTIVE);
+        session.setSessionStatus(SessionStatus.ENDED);
         sessionRepository.save(session);
-        return "Session Ended! Logged out";
+        return "Session Ended! User logged out successfully :)";
     }
 
     public ResponseEntity<List<Session>> getAllSessions() {
@@ -151,7 +152,7 @@ public class AuthenticationService {
     public ResponseEntity<User> getUser(String token) {
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndSessionStatus(token, SessionStatus.ACTIVE);
         if(sessionOptional.isEmpty()){
-            throw new SessionNotFoundException("Session not present for token"+token);
+            throw new SessionNotFoundException("Session not present for token: "+token);
         }
         User user = sessionOptional.get().getUser();
         return new ResponseEntity<>(user,HttpStatus.OK);
